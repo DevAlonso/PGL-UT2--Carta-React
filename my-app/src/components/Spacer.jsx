@@ -1,8 +1,6 @@
-function Spacer(){
-    return(
-
+function Spacer() {
+    return (
         <hr />
-
     )
 }
 
