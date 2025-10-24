@@ -1,12 +1,20 @@
 import MenuItem from "./MenuItem"
+import RemoveCategory from "./RemoveCategory" 
 
-function MenuSection(props){
+export default function MenuSection({menu, index, onDeleteCategory}){
     return(
         <section>
-            <h2>{props.category}</h2>
-            <img src={props.icon} alt={props.category} />
+            <div className="category-container">
+            <h2>{menu.category}</h2>
+            <RemoveCategory 
+                categoryIndex={index}      // ← Usa el index que llega
+                itemsCount={menu.items.length}
+                onDeleteCategory={onDeleteCategory}
+            />
+            </div>
+            <img src={menu.icon} alt={menu.category} />
             
-            {props.items.map((item,index) => (
+            {menu.items.map((item, index) => (
                 <MenuItem
                 key={index}
                 name={item.name}
@@ -14,9 +22,5 @@ function MenuSection(props){
                 />
             ))}
         </section>
-        
     )
-
 }
-
-export default MenuSection
