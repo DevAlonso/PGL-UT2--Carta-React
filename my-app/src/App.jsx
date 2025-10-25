@@ -18,7 +18,7 @@ function App() {
   return (
     <div className='menu'>
       <AddCategory stateCategory={stateCategory} setStateCategory={setStateCategory} />
-      <Header jsondata={menuData} />
+      <Header/>
       <Spacer />
       {stateCategory.map((menu, index) => (
         <MenuSection
@@ -26,9 +26,9 @@ function App() {
           menu={menu}                      // ← Pasa TODO el objeto
           index={index}                    // ← El índice aparte
           onDeleteCategory={deleteCategory}
+          setStateCategory={setStateCategory}
         />
       ))}
-
       <Spacer />
       <Footer />
     </div>

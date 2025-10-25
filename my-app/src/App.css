@@ -85,7 +85,8 @@ footer p {
   justify-content: center;
 }
 
-.edit-button{
+button{
   border-radius: 20px;
-  width: 50px;
+  width: 70px;
+  height: 30px;
 }
