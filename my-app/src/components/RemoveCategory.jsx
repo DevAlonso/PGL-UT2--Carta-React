@@ -3,12 +3,12 @@ export default function RemoveCategory({ categoryIndex, itemsCount, onDeleteCate
     const deleteCategory = () => {
         if (itemsCount > 0) {
             const confirmDelete = window.confirm("This category has items. Delete anyway?");
-            if (!confirmDelete) return;  // Si cancela, no hace nada
+            if (!confirmDelete) return;
         }
 
         onDeleteCategory(categoryIndex);
     };
 
     return (
-        <button className="edit-button" onClick={deleteCategory}>Delete</button>)
+        <button className="delete-button" onClick={deleteCategory}></button>)
 }

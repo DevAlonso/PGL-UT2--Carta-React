@@ -35,6 +35,6 @@ export default function ModifyCategory({ categoryChange, setCategoryChange, inpu
 
 
     return (
-        <button onClick={applyState}>{nameButton}</button>
+        <button className='modify-button'onClick={applyState}>{nameButton}</button>
     )
 }

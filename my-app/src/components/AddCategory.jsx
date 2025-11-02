@@ -22,7 +22,7 @@ export default function AddCategory({ stateCategory, setStateCategory }) {
 
     return (
         <>
-            <input
+            <input className="input-category"
                 type="text"
                 placeholder="New Category"
                 value={inputText}

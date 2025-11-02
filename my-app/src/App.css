@@ -16,7 +16,7 @@ body {
 
 .menu {
   width: 80%;
-  max-width: 400px;
+  max-width: 480px;
   background-color: burlywood;
   margin: 0 auto;
   padding: 20px;
@@ -57,6 +57,7 @@ section img {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+  align-items: center;
 }
 
 .name {
@@ -80,13 +81,55 @@ footer p {
 }
 
 
-.category-container{
+.category-container {
   display: flex;
   justify-content: center;
 }
 
-button{
-  border-radius: 20px;
-  width: 70px;
+button {
+  width: auto;
+  height: 40px;
+  padding: 5px;
+  border: 2px solid rgba(94, 82, 64, 0.3);
+  border-radius: 10px;
+  background: #f5ebe0;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.delete-button{
+  width: 40px;
+}
+
+button:hover {
+  background: #e6d5c3;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.delete-button::before {
+  content: "🗑️";
+}
+.add-item::before {
+  content: "✅";
+}
+.modify-button{
+  width: auto;
+}
+.modify-item::before{
+  content: "✏️";
+}
+
+input{
   height: 30px;
+}
+
+.item-container{
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  margin-right: 10px;
 }
