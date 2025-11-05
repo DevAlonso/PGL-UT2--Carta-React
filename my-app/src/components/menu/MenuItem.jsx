@@ -1,29 +1,32 @@
 import { useState } from "react"
-import ModifyItem from "./ModifyItem"
-import RemoveItem from "./RemoveItem"
+import ModifyItem from "../item/ModifyItem"
+import RemoveItem from "../item/RemoveItem"
+import { updateProducto } from "../../services/api";
 
-function MenuItem({ categoryIndex, itemId, name, price, onDeleteItem, setStateCategory,itemIndex }) {
+function MenuItem({ itemId, name, price, categoriaId, reloadCategoryProducts }) {
     const [modifyItem, setModifyItem] = useState(true);
     const [inputNameValue, setInputNameValue] = useState(name);
     const [inputPriceValue, setInputPriceValue] = useState(price);
 
-
     let itemElement;
+    
     const updateName = (event) => {
         setInputNameValue(event.target.value);
     };
+    
     const updatePrice = (event) => {
         setInputPriceValue(event.target.value);
     };
-    const saveNewItemValue = () => {
-        setStateCategory((prevState) => {
-            const updated = [...prevState]
-
-            updated[categoryIndex].items[itemIndex].name = inputNameValue;
-            updated[categoryIndex].items[itemIndex].price = inputPriceValue;
-
-            return updated
-        })
+    
+    const saveNewItemValue = async () => {
+        try {
+            await updateProducto(itemId, inputNameValue, inputPriceValue);
+            // Recargar productos de esta categoría
+            await reloadCategoryProducts(categoriaId);
+        } catch (error) {
+            console.error('Error updating product:', error);
+            alert('Error al actualizar el producto');
+        }
     }
 
     if (modifyItem) {
@@ -43,9 +46,9 @@ function MenuItem({ categoryIndex, itemId, name, price, onDeleteItem, setStateCa
             {itemElement}
             <div>
                 <RemoveItem
-                    categoryIndex={categoryIndex}
                     itemId={itemId}
-                    onDeleteItem={onDeleteItem}
+                    categoriaId={categoriaId}
+                    reloadCategoryProducts={reloadCategoryProducts}
                 />
                 <ModifyItem
                     modifyItem={modifyItem}

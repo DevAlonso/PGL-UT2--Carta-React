@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { addProducto } from "../../services/api";
 
-export default function AddItem({ addItemState, setAddItemState, categoryIndex, setStateCategory }) {
+export default function AddItem({ addItemState, setAddItemState, categoriaId, reloadCategoryProducts }) {
     const [inputName, setInputName] = useState("");
     const [inputPrice, setInputPrice] = useState("");
+    const [loading, setLoading] = useState(false);
 
     let itemElement;
 
@@ -23,43 +25,32 @@ export default function AddItem({ addItemState, setAddItemState, categoryIndex, 
         }
     }
 
-    const addItem = () => {
+    const addItem = async () => {
         if (inputName.trim() === "" || inputPrice.trim() === "") {
             alert("Fields cannot be empty");
             return;
         }
-        setStateCategory((prevState) => {
-            let maxId = 0;
 
-            prevState.forEach(category => {
-                category.items.forEach(item => {
-                    if (item.id > maxId) {
-                        maxId = item.id;
-                    }
-                });
-            });
-
-            const newId = maxId + 1;
-
-
-            const itemToAdd = {
-                id: newId,
-                name: inputName,
-                price: inputPrice
-            };
-
-            const updated = [...prevState];
-            updated[categoryIndex].items.push(itemToAdd);
-            return updated;
-        });
-
-        setInputName("");
-        setInputPrice("");
+        try {
+            setLoading(true);
+            await addProducto(categoriaId, inputName, inputPrice);
+            
+            // Limpiar campos
+            setInputName("");
+            setInputPrice("");
+            
+            // Recargar solo los productos de esta categoría
+            await reloadCategoryProducts(categoriaId);
+        } catch (error) {
+            console.error('Error adding product:', error);
+            alert('Error al añadir el producto');
+        } finally {
+            setLoading(false);
+        }
     }
 
-
     if (addItemState) {
-        itemElement = <button onClick={handleOnClick}>Add Item</button>;
+        itemElement = <button onClick={handleOnClick} disabled={loading}>Add Item</button>;
     } else {
         itemElement = (
             <div>
@@ -68,14 +59,16 @@ export default function AddItem({ addItemState, setAddItemState, categoryIndex, 
                     placeholder="Product Name"
                     value={inputName}
                     onChange={updateItemName}
+                    disabled={loading}
                 />
                 <input
                     type="text"
                     placeholder="Product Price"
                     value={inputPrice}
                     onChange={updateItemPrice}
+                    disabled={loading}
                 />
-                <button className="add-item" onClick={handleOnClick}></button>
+                <button className="add-item" onClick={handleOnClick} disabled={loading}></button>
             </div>
         );
     }

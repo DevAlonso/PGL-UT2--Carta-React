@@ -1,21 +1,20 @@
 import { useState } from "react"
 import MenuItem from "./MenuItem"
-import ModifyCategory from "./ModifyCategory"
-import RemoveCategory from "./RemoveCategory"
-import AddItem from "./AddItem";
+import ModifyCategory from "../category/ModifyCategory"
+import RemoveCategory from "../category/RemoveCategory"
+import AddItem from "../item/AddItem";
 
 export default function MenuSection({
     menu,
-    index,
-    onDeleteCategory,
-    onDeleteItem,
-    setStateCategory
+    updateCategoryInState,
+    deleteCategoryFromState,
+    reloadCategoryProducts
 }) {
     const [categoryChange, setCategoryChange] = useState(true);
     const [addItemState, setAddItemState] = useState(true);
     const [inputValue, setInputValue] = useState('');
+    
     let categoryElement;
-
 
     if (categoryChange) {
         categoryElement = <h2>{menu.category}</h2>
@@ -32,39 +31,37 @@ export default function MenuSection({
             <div className="category-container">
                 {categoryElement}
                 <RemoveCategory
-                    categoryIndex={index}
+                    categoryId={menu.id}
                     itemsCount={menu.items.length}
-                    onDeleteCategory={onDeleteCategory}
+                    deleteCategoryFromState={deleteCategoryFromState}
                 />
                 <ModifyCategory
                     categoryChange={categoryChange}
                     setCategoryChange={setCategoryChange}
                     inputValue={inputValue}
                     setInputValue={setInputValue}
-                    setStateCategory={setStateCategory}
-                    categoryIndex={index}
+                    categoryId={menu.id}
                     currentCategory={menu.category}
+                    updateCategoryInState={updateCategoryInState}
                 />
             </div>
             <img src={menu.icon} alt={menu.category} />
 
-            {menu.items.map((item,itemIndex) => (
+            {menu.items.map((item) => (
                 <MenuItem
                     key={item.id}
-                    categoryIndex={index}
                     itemId={item.id}
                     name={item.name}
                     price={item.price}
-                    onDeleteItem={onDeleteItem}
-                    setStateCategory={setStateCategory}
-                    itemIndex={itemIndex}
+                    categoriaId={menu.id}
+                    reloadCategoryProducts={reloadCategoryProducts}
                 />
             ))}
             <AddItem
                 addItemState={addItemState}
                 setAddItemState={setAddItemState}
-                categoryIndex={index}
-                setStateCategory={setStateCategory}
+                categoriaId={menu.id}
+                reloadCategoryProducts={reloadCategoryProducts}
             />
         </section>
     )

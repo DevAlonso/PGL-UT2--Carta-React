@@ -1,7 +1,5 @@
 export default function ModifyItem({ modifyItem, setModifyItem, saveNewItemValue }) {
-
-
-
+    
     const handleOnClick = () => {
         if (modifyItem) {
             setModifyItem(false)
