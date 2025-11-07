@@ -1,32 +1,25 @@
 import { useState } from "react"
 import { addCategoria } from "../../services/api";
 
-export default function AddCategory({ reloadCategories }) {
+export default function AddCategory({ loadData }) {
     const [inputText, setInputText] = useState("");
-    const [loading, setLoading] = useState(false);
 
     const updateText = (event) => {
         setInputText(event.target.value);
     };
 
-    const addNewCategory = async () => {
+    const addNewCategory = () => {
         if (inputText.trim() === "") return;
 
-        try {
-            setLoading(true);
-            await addCategoria(inputText);
-            
-            // Limpiar input
-            setInputText("");
-            
-            // Recargar solo las categorías
-            await reloadCategories();
-        } catch (error) {
-            console.error('Error adding category:', error);
-            alert('Error al añadir la categoría');
-        } finally {
-            setLoading(false);
-        }
+        addCategoria(inputText)
+            .then(() => {
+                setInputText("");
+                loadData();
+            })
+            .catch(error => {
+                console.error('Error adding category:', error);
+                alert('Error al añadir la categoría');
+            });
     };
 
     return (
@@ -36,11 +29,8 @@ export default function AddCategory({ reloadCategories }) {
                 placeholder="New Category"
                 value={inputText}
                 onChange={updateText}
-                disabled={loading}
             />
-            <button onClick={addNewCategory} disabled={loading}>
-                {loading ? 'Adding...' : 'Add'}
-            </button>
+            <button onClick={addNewCategory}>Add</button>
         </>
     )
 }

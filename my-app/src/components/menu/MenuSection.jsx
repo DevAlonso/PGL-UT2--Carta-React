@@ -1,40 +1,30 @@
-import { useState } from "react"
-import MenuItem from "./MenuItem"
-import ModifyCategory from "../category/ModifyCategory"
-import RemoveCategory from "../category/RemoveCategory"
-import AddItem from "../item/AddItem";
+import { useState } from 'react';
+import MenuItem from './MenuItem';
+import AddItem from '../item/AddItem';
+import ModifyCategory from '../category/ModifyCategory';
+import RemoveCategory from '../category/RemoveCategory';
 
-export default function MenuSection({
-    menu,
-    updateCategoryInState,
-    deleteCategoryFromState,
-    reloadCategoryProducts
-}) {
+function MenuSection({ menu, loadData }) {
     const [categoryChange, setCategoryChange] = useState(true);
-    const [addItemState, setAddItemState] = useState(true);
     const [inputValue, setInputValue] = useState('');
-    
+    const [addItemState, setAddItemState] = useState(true);
+
     let categoryElement;
 
+    const updateCategory = (event) => {
+        setInputValue(event.target.value);
+    }
+
     if (categoryChange) {
-        categoryElement = <h2>{menu.category}</h2>
+        categoryElement = <h2>{menu.category}</h2>;
     } else {
-        categoryElement = <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-        />
+        categoryElement = <input type="text" value={inputValue} onChange={updateCategory} placeholder='Enter new category name' />;
     }
 
     return (
         <section>
-            <div className="category-container">
+            <div className='section-header'>
                 {categoryElement}
-                <RemoveCategory
-                    categoryId={menu.id}
-                    itemsCount={menu.items.length}
-                    deleteCategoryFromState={deleteCategoryFromState}
-                />
                 <ModifyCategory
                     categoryChange={categoryChange}
                     setCategoryChange={setCategoryChange}
@@ -42,10 +32,14 @@ export default function MenuSection({
                     setInputValue={setInputValue}
                     categoryId={menu.id}
                     currentCategory={menu.category}
-                    updateCategoryInState={updateCategoryInState}
+                    loadData={loadData}
+                />
+                <RemoveCategory
+                    categoryId={menu.id}
+                    itemsCount={menu.items.length}
+                    loadData={loadData}
                 />
             </div>
-            <img src={menu.icon} alt={menu.category} />
 
             {menu.items.map((item) => (
                 <MenuItem
@@ -53,16 +47,20 @@ export default function MenuSection({
                     itemId={item.id}
                     name={item.name}
                     price={item.price}
-                    categoriaId={menu.id}
-                    reloadCategoryProducts={reloadCategoryProducts}
+                    loadData={loadData}
                 />
             ))}
-            <AddItem
-                addItemState={addItemState}
-                setAddItemState={setAddItemState}
-                categoriaId={menu.id}
-                reloadCategoryProducts={reloadCategoryProducts}
-            />
+
+            <div className='category-actions'>
+                <AddItem
+                    addItemState={addItemState}
+                    setAddItemState={setAddItemState}
+                    categoriaId={menu.id}
+                    loadData={loadData}
+                />
+            </div>
         </section>
     )
 }
+
+export default MenuSection

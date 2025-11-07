@@ -133,3 +133,26 @@ input{
   flex: 1;
   margin-right: 10px;
 }
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header h2 {
+    flex: 1;
+    text-align: center;
+    font-size: 32px;
+    margin: 0;
+}
+
+.section-header input {
+    flex: 1;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.section-header button {
+    margin-left: 5px;
+}

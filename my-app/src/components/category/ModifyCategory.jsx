@@ -7,7 +7,7 @@ export default function ModifyCategory({
     setInputValue, 
     categoryId,
     currentCategory,
-    updateCategoryInState
+    loadData
 }) {
     const renameCategory = () => {
         setInputValue(currentCategory)
@@ -17,22 +17,22 @@ export default function ModifyCategory({
     let buttonName = categoryChange
     let nameButton = buttonName ? 'Modify' : 'Guardar';
 
-    async function saveCategory() {
+    function saveCategory() {
         if (inputValue.length === 0 || inputValue.trim() === '') {
             alert('The input is empty');
             return
         }
 
-        try {
-            await updateCategoria(categoryId, inputValue);
-            // Actualizar solo el estado local
-            updateCategoryInState(categoryId, inputValue);
-            setInputValue('')
-            setCategoryChange(true)
-        } catch (error) {
-            console.error('Error updating category:', error);
-            alert('Error al actualizar la categoría');
-        }
+        updateCategoria(categoryId, inputValue)
+            .then(() => {
+                setInputValue('')
+                setCategoryChange(true)
+                loadData();
+            })
+            .catch(error => {
+                console.error('Error updating category:', error);
+                alert('Error al actualizar la categoría');
+            });
     }
 
     const applyState = () => {

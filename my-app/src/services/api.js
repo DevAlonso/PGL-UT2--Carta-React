@@ -1,19 +1,18 @@
 const API_BASE_URL = 'https://jlorenzo.ddns.net/carta_restaurante';
 const USER_ID = 5273;
 
-// ============ CATEGORÍAS ============
-
-async function getCategorias() {
-    const response = await fetch(`${API_BASE_URL}/categorias/?usuario_id=${USER_ID}`);
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
+function getCategorias() {
+    return fetch(`${API_BASE_URL}/categorias/?usuario_id=${USER_ID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        });
 }
 
-async function addCategoria(nombre) {
-    const response = await fetch(`${API_BASE_URL}/categorias/`, {
+function addCategoria(nombre) {
+    return fetch(`${API_BASE_URL}/categorias/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -22,15 +21,17 @@ async function addCategoria(nombre) {
             usuario_id: USER_ID,
             nombre: nombre
         })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return await response.json();
 }
 
-async function updateCategoria(id, nombre) {
-    const response = await fetch(`${API_BASE_URL}/categorias/${id}`, {
+function updateCategoria(id, nombre) {
+    return fetch(`${API_BASE_URL}/categorias/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -39,15 +40,17 @@ async function updateCategoria(id, nombre) {
             usuario_id: USER_ID,
             nombre: nombre
         })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return await response.json();
 }
 
-async function deleteCategoria(id) {
-    const response = await fetch(`${API_BASE_URL}/categorias/${id}`, {
+function deleteCategoria(id) {
+    return fetch(`${API_BASE_URL}/categorias/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -55,26 +58,27 @@ async function deleteCategoria(id) {
         body: JSON.stringify({
             usuario_id: USER_ID
         })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return await response.json();
 }
 
-// ============ PRODUCTOS ============
-
-async function getProductos(categoriaId) {
-    const response = await fetch(`${API_BASE_URL}/productos/${categoriaId}?usuario_id=${USER_ID}`);
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
+function getProductos(categoriaId) {
+    return fetch(`${API_BASE_URL}/productos/${categoriaId}?usuario_id=${USER_ID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        });
 }
 
-async function addProducto(categoriaId, nombre, precio) {
-    const response = await fetch(`${API_BASE_URL}/productos/${categoriaId}`, {
+function addProducto(categoriaId, nombre, precio) {
+    return fetch(`${API_BASE_URL}/productos/${categoriaId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -84,15 +88,17 @@ async function addProducto(categoriaId, nombre, precio) {
             nombre: nombre,
             precio: parseFloat(precio)
         })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return await response.json();
 }
 
-async function updateProducto(productoId, nombre, precio) {
-    const response = await fetch(`${API_BASE_URL}/productos/${productoId}`, {
+function updateProducto(productoId, nombre, precio) {
+    return fetch(`${API_BASE_URL}/productos/${productoId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -102,15 +108,17 @@ async function updateProducto(productoId, nombre, precio) {
             nombre: nombre,
             precio: parseFloat(precio)
         })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return await response.json();
 }
 
-async function deleteProducto(productoId) {
-    const response = await fetch(`${API_BASE_URL}/productos/${productoId}`, {
+function deleteProducto(productoId) {
+    return fetch(`${API_BASE_URL}/productos/${productoId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -118,11 +126,13 @@ async function deleteProducto(productoId) {
         body: JSON.stringify({
             usuario_id: USER_ID
         })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return await response.json();
 }
 
 export {

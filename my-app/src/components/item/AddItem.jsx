@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { addProducto } from "../../services/api";
 
-export default function AddItem({ addItemState, setAddItemState, categoriaId, reloadCategoryProducts }) {
+export default function AddItem({ addItemState, setAddItemState, categoriaId, loadData }) {
     const [inputName, setInputName] = useState("");
     const [inputPrice, setInputPrice] = useState("");
-    const [loading, setLoading] = useState(false);
 
     let itemElement;
 
@@ -25,32 +24,26 @@ export default function AddItem({ addItemState, setAddItemState, categoriaId, re
         }
     }
 
-    const addItem = async () => {
+    const addItem = () => {
         if (inputName.trim() === "" || inputPrice.trim() === "") {
             alert("Fields cannot be empty");
             return;
         }
 
-        try {
-            setLoading(true);
-            await addProducto(categoriaId, inputName, inputPrice);
-            
-            // Limpiar campos
-            setInputName("");
-            setInputPrice("");
-            
-            // Recargar solo los productos de esta categoría
-            await reloadCategoryProducts(categoriaId);
-        } catch (error) {
-            console.error('Error adding product:', error);
-            alert('Error al añadir el producto');
-        } finally {
-            setLoading(false);
-        }
+        addProducto(categoriaId, inputName, inputPrice)
+            .then(() => {
+                setInputName("");
+                setInputPrice("");
+                loadData();
+            })
+            .catch(error => {
+                console.error('Error adding product:', error);
+                alert('Error al añadir el producto');
+            });
     }
 
     if (addItemState) {
-        itemElement = <button onClick={handleOnClick} disabled={loading}>Add Item</button>;
+        itemElement = <button onClick={handleOnClick}>Add Item</button>;
     } else {
         itemElement = (
             <div>
@@ -59,16 +52,14 @@ export default function AddItem({ addItemState, setAddItemState, categoriaId, re
                     placeholder="Product Name"
                     value={inputName}
                     onChange={updateItemName}
-                    disabled={loading}
                 />
                 <input
                     type="text"
                     placeholder="Product Price"
                     value={inputPrice}
                     onChange={updateItemPrice}
-                    disabled={loading}
                 />
-                <button className="add-item" onClick={handleOnClick} disabled={loading}></button>
+                <button className="add-item" onClick={handleOnClick}></button>
             </div>
         );
     }

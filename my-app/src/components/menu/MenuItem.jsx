@@ -3,7 +3,7 @@ import ModifyItem from "../item/ModifyItem"
 import RemoveItem from "../item/RemoveItem"
 import { updateProducto } from "../../services/api";
 
-function MenuItem({ itemId, name, price, categoriaId, reloadCategoryProducts }) {
+function MenuItem({ itemId, name, price, loadData }) {
     const [modifyItem, setModifyItem] = useState(true);
     const [inputNameValue, setInputNameValue] = useState(name);
     const [inputPriceValue, setInputPriceValue] = useState(price);
@@ -18,15 +18,15 @@ function MenuItem({ itemId, name, price, categoriaId, reloadCategoryProducts }) 
         setInputPriceValue(event.target.value);
     };
     
-    const saveNewItemValue = async () => {
-        try {
-            await updateProducto(itemId, inputNameValue, inputPriceValue);
-            // Recargar productos de esta categoría
-            await reloadCategoryProducts(categoriaId);
-        } catch (error) {
-            console.error('Error updating product:', error);
-            alert('Error al actualizar el producto');
-        }
+    const saveNewItemValue = () => {
+        updateProducto(itemId, inputNameValue, inputPriceValue)
+            .then(() => {
+                loadData();
+            })
+            .catch(error => {
+                console.error('Error updating product:', error);
+                alert('Error al actualizar el producto');
+            });
     }
 
     if (modifyItem) {
@@ -47,8 +47,7 @@ function MenuItem({ itemId, name, price, categoriaId, reloadCategoryProducts }) 
             <div>
                 <RemoveItem
                     itemId={itemId}
-                    categoriaId={categoriaId}
-                    reloadCategoryProducts={reloadCategoryProducts}
+                    loadData={loadData}
                 />
                 <ModifyItem
                     modifyItem={modifyItem}
